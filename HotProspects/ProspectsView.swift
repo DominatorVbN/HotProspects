@@ -14,11 +14,18 @@ enum FilterType{
     case none, contacted, uncontacted
 }
 
+enum SortType: String,CaseIterable,Equatable{
+    case none = "None"
+    case byName = "By Name"
+    case byMostRecent = "By Most Recent"
+}
+
 struct ProspectsView: View {
-    
+    @State private var isShowingSheet = false
     @State private var isShowingScanner = false
     @EnvironmentObject var prospects: Prospects
     let filter: FilterType
+    @State var sortType: SortType = .byName
     var title: String{
         switch filter {
         case .none:
@@ -39,16 +46,41 @@ struct ProspectsView: View {
             return prospects.people.filter{!$0.isContacted}
         }
     }
+    
+    var sortedProspects: [Prospect]{
+        switch sortType {
+        case .none:
+            return filteredProspects
+        case .byName:
+            return filteredProspects.sorted(by: {$0.name < $1.name})
+        case .byMostRecent:
+            return filteredProspects.sorted(by: {
+                guard let firstDate = $0.createdOn else{
+                    return $0.name < $1.name
+                }
+                guard let secondDate = $0.createdOn else{
+                    return $0.name < $1.name
+                }
+                return firstDate > secondDate
+            })
+        }
+    }
     var body: some View {
         NavigationView {
             List{
-                ForEach(filteredProspects) { prospect in
-                    VStack(alignment: .leading){
-                        Text(prospect.name)
-                            .font(.headline)
-                        Text(prospect.emailAddress)
-                            .foregroundColor(.secondary)
-                    }.contextMenu{
+                ForEach(sortedProspects) { prospect in
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text(prospect.name)
+                                .font(.headline)
+                            Text(prospect.emailAddress)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                        Image(systemName: prospect.isContacted ? "checkmark.circle" : "questionmark.diamond")
+                            .foregroundColor(.accentColor)
+                    }
+                    .contextMenu{
                         Button(prospect.isContacted ? "Mark Uncontacted" : "Mark Contacted"){
                             self.prospects.toggle(prospect)
                         }
@@ -61,7 +93,17 @@ struct ProspectsView: View {
                 }
             }
             .navigationBarTitle(title)
-            .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(
+                leading:
+                Button(action: {
+                    self.isShowingSheet = true
+                }){
+                    HStack {
+                        Image(systemName: self.sortType == .none ? "line.horizontal.3.decrease.circle" : "line.horizontal.3.decrease.circle.fill")
+                        Text("Sort")
+                    }
+                },
+                trailing: Button(action: {
                 self.isShowingScanner = true
             }) {
                 Image(systemName: "qrcode.viewfinder")
@@ -69,6 +111,16 @@ struct ProspectsView: View {
             })
                 .sheet(isPresented: $isShowingScanner) {
                     CodeScannerView(codeTypes: [.qr], completion: self.handleScan)
+            }
+            .actionSheet(isPresented: $isShowingSheet) {
+                ActionSheet(title: Text("Sort by:"), message: nil, buttons:
+                    SortType.allCases.map({  type in
+                        ActionSheet.Button.default(Text(type.rawValue)) {
+                            self.sortType = type
+                        }
+                        })
+                    + [.cancel()]
+                )
             }
         }
     }
@@ -83,6 +135,7 @@ struct ProspectsView: View {
             let person = Prospect()
             person.name = details[0]
             person.emailAddress = details[1]
+            person.createdOn = Date()
             self.prospects.add(person)
         case .failure(let error):
             print("Scanning failed")

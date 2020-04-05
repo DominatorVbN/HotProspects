@@ -17,24 +17,47 @@ struct MeView: View {
     let filter = CIFilter.qrCodeGenerator()
     
     var body: some View {
-        VStack{
-            TextField("Name", text: $name)
-                .textContentType(.name)
-                .font(.title)
-                .padding(.horizontal)
-            TextField("Email address", text: $emailAddress)
-                .textContentType(.emailAddress)
-                .font(.title)
-                .padding([.horizontal, .bottom])
-            Image(uiImage: genrateQrCode(from: "\(name)\n\(emailAddress)"))
-                .interpolation(.none)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 200, height: 200)
+        NavigationView {
+            VStack{
+                TextField("Name", text: $name)
+                    .textContentType(.name)
+                    .font(.title)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white)
+                        .shadow(radius: 5)
+                    )
+                    .padding()
+
+                TextField("Email address", text: $emailAddress)
+                    .textContentType(.emailAddress)
+                    .font(.title)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white)
+                        .shadow(radius: 5)
+                    )
+                    .padding(.horizontal)
+                    .padding(.bottom)
                 
-            Spacer()
+                Image(uiImage: genrateQrCode(from: "\(name)\n\(emailAddress)"))
+                    .interpolation(.none)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white)
+                        .shadow(radius: 5)
+                    )
+                    
+                Spacer()
+            }
+            .navigationBarTitle("Your Code")
         }
-        .navigationBarTitle("Your Code")
     }
     
     func genrateQrCode(from string: String) -> UIImage{
