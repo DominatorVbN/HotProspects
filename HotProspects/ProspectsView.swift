@@ -25,7 +25,7 @@ struct ProspectsView: View {
     @State private var isShowingScanner = false
     @EnvironmentObject var prospects: Prospects
     let filter: FilterType
-    @State var sortType: SortType = .byName
+    @State var sortType: SortType = .none
     var title: String{
         switch filter {
         case .none:
