@@ -25,7 +25,7 @@ struct MeView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                            .fill(Color(UIColor.secondarySystemBackground))
                         .shadow(radius: 5)
                     )
                     .padding()
@@ -36,7 +36,7 @@ struct MeView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                            .fill(Color(UIColor.secondarySystemBackground))
                         .shadow(radius: 5)
                     )
                     .padding(.horizontal)
@@ -50,10 +50,18 @@ struct MeView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                            .fill(Color(UIColor.tertiarySystemGroupedBackground))
                         .shadow(radius: 5)
-                    )
-                    
+                )
+                    .padding(.bottom)
+                
+                Button("Save to gallery"){
+                    ImageSaver().saveImageToLibrary(self.genrateQrCode(from: "\(self.name)\n\(self.emailAddress)"))
+                }
+                .foregroundColor(.white)
+                .padding()
+                .background(Capsule().fill(Color.accentColor))
+                
                 Spacer()
             }
             .navigationBarTitle("Your Code")

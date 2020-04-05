@@ -91,6 +91,14 @@ struct ProspectsView: View {
                         }
                     }
                 }
+                .onDelete { indexSet in
+                    let ui: IndexSet = IndexSet(indexSet.map({ index in
+                        let element = self.sortedProspects[index]
+                        let actualIndex = self.prospects.people.firstIndex(where: {$0.id == element.id})!
+                        return actualIndex
+                    }))
+                    self.prospects.delete(ui)
+                }
             }
             .navigationBarTitle(title)
             .navigationBarItems(

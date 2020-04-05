@@ -55,4 +55,9 @@ class Prospects: ObservableObject {
         save()
     }
     
+    func delete(_ indexSet: IndexSet){
+        self.people.remove(atOffsets: indexSet)
+        save()
+    }
+    
 }
