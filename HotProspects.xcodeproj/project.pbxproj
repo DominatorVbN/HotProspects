@@ -33,6 +33,7 @@
 		8356AAE12437743E00500D09 /* MeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeView.swift; sourceTree = "<group>"; };
 		8356AAE3243776FA00500D09 /* Prospect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prospect.swift; sourceTree = "<group>"; };
 		83A895FE2439E11B0066B987 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
+		83A896002439EF210066B987 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +51,7 @@
 		8356AABC2437453300500D09 = {
 			isa = PBXGroup;
 			children = (
+				83A896002439EF210066B987 /* README.md */,
 				8356AAC72437453300500D09 /* HotProspects */,
 				8356AAC62437453300500D09 /* Products */,
 			);

@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CodeScanner",
+        "repositoryURL": "https://github.com/DominatorVbN/CodeScanner",
+        "state": {
+          "branch": null,
+          "revision": "5667d232b8b0017f82bd49f30d0cd1eb7a454b45",
+          "version": "1.0.7"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
